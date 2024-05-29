@@ -2,15 +2,20 @@
 const assignCustomValidation = () => {
     const form = document.getElementById('product_form');
     const requiredFields = form.querySelectorAll('[required]');
+    const numericFields = ['price', 'size', 'weight', 'height', 'width', 'length'];
 
     // Validate the form on submit
     form.addEventListener('submit', function (event) {
         let isFormValid = true;
 
         requiredFields.forEach(field => {
-            if (!field.validity.valid) {
+            if (!field.validity.valid || (numericFields.includes(field.id) && isNaN(field.value))) {
                 isFormValid = false;
-                field.setCustomValidity('Please, submit required data');
+                if (field.value === '') {
+                    field.setCustomValidity('Please, submit required data');
+                } else if (numericFields.includes(field.id) && isNaN(field.value)) {
+                    field.setCustomValidity('Please, provide the data of indicated type');
+                }
                 field.reportValidity(); // Trigger validation message
             }
         });
@@ -25,10 +30,17 @@ const assignCustomValidation = () => {
     requiredFields.forEach(field => {
         field.addEventListener('input', function () {
             this.setCustomValidity(''); // Clear custom message on input
+            if (numericFields.includes(this.id) && isNaN(this.value)) {
+                this.setCustomValidity('Please, provide the data of indicated type');
+            }
         });
 
         field.addEventListener('invalid', function () {
-            this.setCustomValidity('Please, submit required data');
+            if (this.value === '') {
+                this.setCustomValidity('Please, submit required data');
+            } else if (numericFields.includes(this.id) && isNaN(this.value)) {
+                this.setCustomValidity('Please, provide the data of indicated type');
+            }
         });
     });
 };
