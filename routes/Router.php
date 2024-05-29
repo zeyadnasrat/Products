@@ -21,7 +21,7 @@ class Router
     {
         $this->routes = [
             '/' => __DIR__ . '/../public/Index.php',
-            '/add-product' => __DIR__ . '/../public/AddProduct.php',
+            '/add-product' => __DIR__ . '/../src/Views/AddProduct.php',
         ];
         $this->baseDir = __DIR__ . '/../';
         $this->requestUri = strtok($_SERVER['REQUEST_URI'], '?');
