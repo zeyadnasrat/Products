@@ -3,29 +3,29 @@ const attributeTemplates = {
     Dvd: `
         <div class="form-group">
             <label for="size">Size (MB)</label>
-            <input type="number" id="size" name="size" class="form-control" required>
+            <input type="text" id="size" name="size" class="form-control" required>
             <p>Please provide size in MB</p>
         </div>
     `,
     Furniture: `
         <div class="form-group">
             <label for="height">Height (CM)</label>
-            <input type="number" id="height" name="height" class="form-control" required>
+            <input type="text" id="height" name="height" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="width">Width (CM)</label>
-            <input type="number" id="width" name="width" class="form-control" required>
+            <input type="text" id="width" name="width" class="form-control" required>
         </div>
         <div class="form-group">
             <label for="length">Length (CM)</label>
-            <input type="number" id="length" name="length" class="form-control" required>
+            <input type="text" id="length" name="length" class="form-control" required>
             <p>Please provide dimensions in HxWxL format</p>
         </div>    
     `,
     Book: `
         <div class="form-group">
             <label for="weight">Weight (KG)</label>
-            <input type="number" id="weight" name="weight" class="form-control" required>
+            <input type="text" id="weight" name="weight" class="form-control" required>
             <p>Please provide weight in KG</p>
         </div>
     `
