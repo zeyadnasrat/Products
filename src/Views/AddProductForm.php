@@ -57,6 +57,7 @@
     <?php
         $jsPath = $action != '' ? '/../public/js/' : 'public/js/';
         echo '<script src="' . $jsPath . 'product-form.js"></script>';
+        echo '<script src="' . $jsPath . 'sku-validator.js"></script>';
         echo '<script src="' . $jsPath . 'save-product.js"></script>';
         echo '<script src="' . $jsPath . 'custom-validation.js"></script>';
     ?>
