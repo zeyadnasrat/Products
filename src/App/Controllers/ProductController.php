@@ -2,25 +2,22 @@
 
 namespace App\Controllers;
 
-require_once __DIR__ . '/../../../database/Config.php';
-require_once __DIR__ . '/../../../database/ProductFactory.php';
+use App\Services\ProductService;
 
-use Database\Config;
-use Database\ProductFactory;
+require_once __DIR__ . '/../Services/ProductService.php';
 
 class ProductController
 {
-    protected $pdo;
+    protected $productService;
 
     public function __construct()
     {
-        $config = new Config();
-        $this->pdo = $config->getConnection();
+        $this->productService = new ProductService();
     }
 
     public function showProductList($action = '')
     {
-        $productsData = $this->get();
+        $productsData =  $this->productService->get();
 
         $this->renderView('ProductList', ['productsData' => $productsData, 'action' => $action]);
     }
@@ -36,64 +33,15 @@ class ProductController
         include __DIR__ . "/../../../src/Views/{$viewName}.php";
     }
     
-    public function get()
-    {
-        $stmt = $this->pdo->query("
-            SELECT p.*,
-                b.weight AS weight,
-                d.size AS size,
-                f.height AS height,
-                f.width AS width,
-                f.length AS length
-            FROM products p
-            LEFT JOIN book_products b ON p.id = b.product_id
-            LEFT JOIN dvd_products d ON p.id = d.product_id
-            LEFT JOIN furniture_products f ON p.id = f.product_id
-            ORDER BY p.id
-        ");
-
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
     public function create($productData)
     {
-        $productType = null;
-
-        // Define special attributes to class mapping
-        $specialAttributesClassMapping = [
-            'weight' => "Book",
-            'size' => "Dvd",
-            'height' => "Furniture",
-            'width' => "Furniture",
-            'length' => "Furniture",
-        ];
-
-        // Filter non-null attributes from product data
-        $filteredProductData = array_filter($productData, function ($value) {
-            return $value !== null;
-        });
-
-        $productSpecialAttributes = array_intersect_key($filteredProductData, $specialAttributesClassMapping);
-
-        if (!empty($productSpecialAttributes)) {
-            $firstAttribute = array_key_first($productSpecialAttributes);
-            $productType = $specialAttributesClassMapping[$firstAttribute];
-        }
-
-        if (!$productType) {
-            return null; 
-        }
-
-        // Instantiate appropriate product class object using the data from the database row
-        $product = ProductFactory::createProduct(
-            $productType,
-            $productData['sku'],
-            $productData['name'],
-            $productData['price'],
-            $productSpecialAttributes,
-        );
-
+        $product = $this->productService->create($productData);
         return $product;
+    }
+
+    public function saveProduct(array $postData)
+    {
+        $this->productService->saveProduct($postData);
     }
 
     public function delete()
@@ -108,14 +56,7 @@ class ProductController
             $selectedProductSkus = $data['selectedProducts']; 
   
             try {
-                // Prepare a parameterized DELETE query using placeholders
-                $placeholders = rtrim(str_repeat('?,', count($selectedProductSkus)), ',');
-                $sql = "DELETE FROM products WHERE sku IN ($placeholders)";
-
-                // Prepare the SQL statement to delete selected products
-                $stmt = $this->pdo->prepare($sql);
-                $stmt->execute($selectedProductSkus);
-
+                $this->productService->delete($selectedProductSkus);
             } catch (PDOException $e) {
                 echo "Error deleting products: " . $e->getMessage();
             }
@@ -128,14 +69,6 @@ class ProductController
 
     public function checkSku($sku)
     {
-        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM products WHERE sku = ?");
-        $stmt->execute([$sku]);
-        $count = $stmt->fetchColumn();
-
-        if($count) {
-            return 'exists ';
-        } else {
-            return 'unique ';
-        }
+        return $this->productService->checkSku($sku);
     }
 }
