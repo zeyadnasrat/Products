@@ -122,4 +122,3 @@ class Router
 
 $router = new Router();
 $router->handleRequest();
-?>
