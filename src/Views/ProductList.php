@@ -8,9 +8,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <?php
-        $cssPath = $action != '' ? '/../public/css/Styles.css' : 'public/css/Styles.css';
-        $navScriptPath = $action != '' ? '/../public/js/Navigation.js' : 'public/js/Navigation.js';
-        $deleteScriptPath = $action != '' ? '/../public/js/DeleteProducts.js' : 'public/js/DeleteProducts.js';
+        $cssPath = $action != '' ? '/../public/css/styles.css' : 'public/css/styles.css';
+        $navScriptPath = $action != '' ? '/../public/js/navigation.js' : 'public/js/navigation.js';
+        $deleteScriptPath = $action != '' ? '/../public/js/delete-products.js' : 'public/js/delete-products.js';
         
         echo '<link rel="stylesheet" href="' . $cssPath . '" type="text/css">';
         echo '<script src="' . $navScriptPath . '" type="text/javascript"></script>';

@@ -6,7 +6,7 @@
     <title>Add Product</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <?php
-        $cssPath = $action != '' ? '/../public/css/Styles.css' : 'public/css/Styles.css';
+        $cssPath = $action != '' ? '/../public/css/styles.css' : 'public/css/styles.css';
         echo '<link rel="stylesheet" href="' . $cssPath . '">';
     ?>
 </head>
@@ -56,9 +56,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <?php
         $jsPath = $action != '' ? '/../public/js/' : 'public/js/';
-        echo '<script src="' . $jsPath . 'ProductForm.js"></script>';
-        echo '<script src="' . $jsPath . 'SaveProduct.js"></script>';
-        echo '<script src="' . $jsPath . 'CustomValidation.js"></script>';
+        echo '<script src="' . $jsPath . 'product-form.js"></script>';
+        echo '<script src="' . $jsPath . 'save-product.js"></script>';
+        echo '<script src="' . $jsPath . 'custom-validation.js"></script>';
     ?>
 </body>
 </html>
