@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Send AJAX request using jQuery
             $.ajax({
                 type: 'POST',
-                url: 'routes/Router.php',
+                url: '/delete-products',
                 contentType: 'application/json',
                 data: JSON.stringify({ action: action, selectedProducts: selectedProducts }),
                 success: function(response) {

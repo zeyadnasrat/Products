@@ -17,6 +17,24 @@ class ProductController
         $config = new Config();
         $this->pdo = $config->getConnection();
     }
+
+    public function showProductList($action = '')
+    {
+        $productsData = $this->get();
+
+        $this->renderView('ProductList', ['productsData' => $productsData, 'action' => $action]);
+    }
+
+    public function showAddProductForm($action = '')
+    {
+        $this->renderView('AddProductForm', ['action' => $action]);
+    }
+
+    private function renderView($viewName, $data = [])
+    {
+        extract($data);
+        include __DIR__ . "/../../../src/Views/{$viewName}.php";
+    }
     
     public function get()
     {
@@ -115,9 +133,9 @@ class ProductController
         $count = $stmt->fetchColumn();
 
         if($count) {
-            echo 'exists ';
+            return 'exists ';
         } else {
-            echo 'unique ';
+            return 'unique ';
         }
     }
 }
