@@ -11,7 +11,7 @@ $(document).ready(function () {
 
             $.ajax({
                 type: 'POST',
-                url: 'routes/Router.php',
+                url: '/check-sku',
                 data: { sku: sku },
                 success: function(response) {
                     if (response === 'exists ') {
@@ -38,7 +38,7 @@ $(document).ready(function () {
         // Send AJAX request to save product
         $.ajax({
             type: 'POST',
-            url: '/src/App/Services/SaveProductService.php', // URL of the PHP script handling the database insertion
+            url: '/save-product', // URL of the PHP script handling the database insertion
             data: formData,
             success: function () {
                 window.location.href = '/routes/Router.php?action=/';

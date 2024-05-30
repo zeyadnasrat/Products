@@ -20,8 +20,15 @@ class Router
     public function __construct()
     {
         $this->routes = [
-            '/' => __DIR__ . '/../public/Index.php',
-            '/add-product' => __DIR__ . '/../src/Views/AddProduct.php',
+            'GET' => [
+                '/' => [ProductController::class, 'showProductList'],
+                '/add-product' => [ProductController::class, 'showAddProductForm'],
+            ],
+            'POST' => [
+                '/save-product' => [SaveProductService::class, 'saveProduct'],
+                '/delete-products' => [ProductController::class, 'delete'],
+                '/check-sku' => [ProductController::class, 'checkSku'],
+            ]
         ];
         $this->baseDir = __DIR__ . '/../';
         $this->requestUri = strtok($_SERVER['REQUEST_URI'], '?');
@@ -32,55 +39,56 @@ class Router
 
     public function handleRequest()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $this->handleGetRequest();
-        } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->handlePostRequest();
-        }
-    }
+        $method = $_SERVER['REQUEST_METHOD'];
 
-    private function handleGetRequest()
-    {
         if ($this->isStaticFileRequest()) {
             $this->serveStaticFile();
             return;
-        } 
-
-        if (isset($this->routes[$this->requestUri])) {
-            require_once $this->routes[$this->requestUri];
+        }
+        
+        if (isset($this->routes[$method][$this->requestUri])) {
+            $this->dispatch($this->routes[$method][$this->requestUri]);
             return;
         }
-
-        if (!empty($this->action) && isset($this->routes[$this->action])) {
-            require_once $this->routes[$this->action];
+        if(isset($this->routes[$method][$this->action])) {
+            $this->dispatch($this->routes[$method][$this->action]);
             return;
+        } else {
+            echo "Route not found";
         }
-
-        echo "Route not found";
     }
 
-    private function handlePostRequest()
+    private function dispatch($route)
+    {
+        [$controller, $method] = $route;
+        $controllerInstance = new $controller();
+
+        // For POST requests, pass post data to the controller method
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $postData = $this->getPostData();
+            if($this->requestUri === '/check-sku') {
+                echo $controllerInstance->$method($postData['sku'], $this->action);
+                return;
+            } else {
+                echo $controllerInstance->$method($postData, $this->action);
+                return;
+            }
+        } else {
+            echo $controllerInstance->$method($this->action);
+            return;
+        }
+    }
+
+    private function getPostData()
     {
         $postData = [];
-
-        // Check if the Content-Type is application/json
         if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
-            // Decode the JSON input
             $input = file_get_contents('php://input');
             $postData = json_decode($input, true);
         } else {
             $postData = $_POST;
         }
-
-        if (isset($postData['sku'])) {
-            $this->validateSku($postData['sku']);
-        }
-        if (strpos($this->requestUri, '/src/App/Services/SaveProductService.php') !== false) {
-            $this->saveProduct($postData);
-        }
-        if (isset($postData['action']) && $postData['action'] === 'delete_products') {
-            $this->deleteProducts($postData);
-        }
+        return $postData;
     }
 
     private function isStaticFileRequest()
@@ -111,25 +119,6 @@ class Router
             header('Content-Type: ' . $mimeTypes[$fileExtension]);
             readfile($path);
         }
-    }
-
-    private function validateSku($sku)
-    {
-        $productController = new ProductController();
-        $productController->checkSku($sku);
-    }
-
-    private function saveProduct($postData)
-    {
-        $service = new SaveProductService();
-        $service->saveProduct($postData);
-    }
-
-    private function deleteProducts($postData)
-    {
-        require_once __DIR__ . '/../src/App/Controllers/ProductController.php';
-        $productController = new ProductController();
-        $productController->delete($postData['selectedProducts']);
     }
 }
 
