@@ -56,10 +56,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <?php
         $jsPath = $action != '' ? '/../public/js/' : 'public/js/';
-        echo '<script src="' . $jsPath . 'product-form.js"></script>';
         echo '<script src="' . $jsPath . 'sku-validator.js"></script>';
+        echo '<script src="' . $jsPath . 'type-switcher.js"></script>';
         echo '<script src="' . $jsPath . 'save-product.js"></script>';
         echo '<script src="' . $jsPath . 'custom-validation.js"></script>';
+        echo '<script src="' . $jsPath . 'cancel-button.js"></script>';
     ?>
 </body>
 </html>

@@ -53,7 +53,3 @@ const handleProductTypeChange = (event) => {
 };
 
 document.getElementById('productType').addEventListener('change', handleProductTypeChange);
-
-document.getElementById('btnCancel').addEventListener('click', () => {
-    window.location.href = '/routes/Router.php?action=/';
-});
