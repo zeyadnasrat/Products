@@ -2,11 +2,9 @@
 
 namespace App;
 
-require_once __DIR__ . '/../src/App/Controllers/ProductController.php';
-require_once __DIR__ . '/../src/App/Services/SaveProductService.php';
-
 use App\Controllers\ProductController;
-use App\Services\SaveProductService;
+
+require_once __DIR__ . '/../src/App/Controllers/ProductController.php';
 
 class Router
 {
@@ -25,7 +23,7 @@ class Router
                 '/add-product' => [ProductController::class, 'showAddProductForm'],
             ],
             'POST' => [
-                '/save-product' => [SaveProductService::class, 'saveProduct'],
+                '/save-product' => [ProductController::class, 'saveProduct'],
                 '/delete-products' => [ProductController::class, 'delete'],
                 '/check-sku' => [ProductController::class, 'checkSku'],
             ]

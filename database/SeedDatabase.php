@@ -2,9 +2,9 @@
 
 namespace Database;
 
-require_once __DIR__ . '/Config.php';
-
 use PDOException;
+
+require_once __DIR__ . '/Config.php';
 
 class SeedDatabase
 {
