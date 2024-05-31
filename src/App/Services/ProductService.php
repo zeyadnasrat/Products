@@ -26,7 +26,7 @@ class ProductService
     public function get()
     {
         $cacheFile = $this->cacheDir . 'products_cache.json';
-        $cacheTime = 3600; // 1 hour
+        $cacheTime = 300; // 5 minutes
 
         // Check if cache file exists and is still valid
         if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTime) {
