@@ -15,22 +15,26 @@ class ProductController
         $this->productService = new ProductService();
     }
 
-    public function showProductList($action = '')
+    public function showProductList()
     {
         $productsData =  $this->productService->get();
 
-        $this->renderView('ProductList', ['productsData' => $productsData, 'action' => $action]);
+        $this->renderView('ProductList', ['productsData' => $productsData]);
     }
 
-    public function showAddProductForm($action = '')
+    public function showAddProductForm()
     {
-        $this->renderView('AddProductForm', ['action' => $action]);
+        $this->renderView('AddProductForm');
     }
 
     private function renderView($viewName, $data = [])
     {
         extract($data);
-        include __DIR__ . "/../../../src/Views/{$viewName}.php";
+        if($viewName === 'ProductList') {
+            include __DIR__ . "/../../../src/Views/{$viewName}.php";    
+        } else {
+            include __DIR__ . "/../../../src/Views/{$viewName}.html";
+        }
     }
     
     public function create($productData)

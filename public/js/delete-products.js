@@ -18,16 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Please select products to delete.');
                 return;
             }
-
-            // Define the action to be handled by the router
-            var action = 'delete_products';
             
             // Send AJAX request using jQuery
             $.ajax({
                 type: 'POST',
                 url: '/delete-products',
                 contentType: 'application/json',
-                data: JSON.stringify({ action: action, selectedProducts: selectedProducts }),
+                data: JSON.stringify({ selectedProducts: selectedProducts }),
                 success: function(response) {
                     checkboxes.forEach(function(checkbox) {
                         checkbox.checked = false;

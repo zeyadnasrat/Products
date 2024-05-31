@@ -11,9 +11,6 @@ class Router
     private $routes;
     private $baseDir;
     private $requestUri;
-    private $queryString;
-    private $queryParams;
-    private $action;
 
     public function __construct()
     {
@@ -30,9 +27,6 @@ class Router
         ];
         $this->baseDir = __DIR__ . '/../';
         $this->requestUri = strtok($_SERVER['REQUEST_URI'], '?');
-        $this->queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY) ?? '';
-        parse_str($this->queryString, $this->queryParams);
-        $this->action = $this->queryParams['action'] ?? '';
     }
 
     public function handleRequest()
@@ -46,10 +40,6 @@ class Router
         
         if (isset($this->routes[$method][$this->requestUri])) {
             $this->dispatch($this->routes[$method][$this->requestUri]);
-            return;
-        }
-        if(isset($this->routes[$method][$this->action])) {
-            $this->dispatch($this->routes[$method][$this->action]);
             return;
         } else {
             echo "Route not found";
@@ -65,14 +55,14 @@ class Router
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $postData = $this->getPostData();
             if($this->requestUri === '/check-sku') {
-                echo $controllerInstance->$method($postData['sku'], $this->action);
+                echo $controllerInstance->$method($postData['sku']);
                 return;
             } else {
-                echo $controllerInstance->$method($postData, $this->action);
+                echo $controllerInstance->$method($postData);
                 return;
             }
         } else {
-            echo $controllerInstance->$method($this->action);
+            echo $controllerInstance->$method($this->requestUri);
             return;
         }
     }

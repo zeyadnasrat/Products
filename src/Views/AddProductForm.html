@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <?php
-        $cssPath = $action != '' ? '/../public/css/styles.css' : 'public/css/styles.css';
-        echo '<link rel="stylesheet" href="' . $cssPath . '">';
-    ?>
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/public/js/type-switcher.js"></script>
+    <script src="/public/js/cancel-button.js"></script>
+    <script src="/public/js/sku-validator.js"></script>
+    <script src="/public/js/save-product.js"></script>
+    <script src="/public/js/custom-validation.js"></script>
 </head>
 <body>
     <div class="container">
@@ -52,15 +55,5 @@
 
         <hr class="separator">
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <?php
-        $jsPath = $action != '' ? '/../public/js/' : 'public/js/';
-        echo '<script src="' . $jsPath . 'sku-validator.js"></script>';
-        echo '<script src="' . $jsPath . 'type-switcher.js"></script>';
-        echo '<script src="' . $jsPath . 'save-product.js"></script>';
-        echo '<script src="' . $jsPath . 'custom-validation.js"></script>';
-        echo '<script src="' . $jsPath . 'cancel-button.js"></script>';
-    ?>
 </body>
 </html>
