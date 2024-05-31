@@ -6,32 +6,33 @@ use Database\Config;
 use Database\ProductFactory;
 use PDOException;
 use App\Models\Product;
+use App\Cache\Cache;
 
 require_once __DIR__ . '/../../../database/Config.php';
 require_once __DIR__ . '/../../../database/ProductFactory.php';
 require_once __DIR__ . '/../Models/Product.php';
+require_once __DIR__ . '/../../../cache/Cache.php';
 
 class ProductService
 {
     private $pdo;
-    private $cacheDir;
+    private $cache;
 
     public function __construct()
     {
         $config = new Config();
         $this->pdo = $config->getConnection();
-        $this->cacheDir = __DIR__ . '/../../../cache/';
+        $this->cache = new Cache();
     }
 
     public function get()
     {
-        $cacheFile = $this->cacheDir . 'products_cache.json';
-        $cacheTime = 300; // 5 minutes
+        $cacheKey = 'products_cache';
 
-        // Check if cache file exists and is still valid
-        if (file_exists($cacheFile) && (time() - filemtime($cacheFile)) < $cacheTime) {
-            $productsData = json_decode(file_get_contents($cacheFile), true);
-        } else {
+        // Check if the data is in the cache
+        $productsData = $this->cache->get($cacheKey);
+        if (!$productsData) {
+            // If not in the cache, fetch the data from the database
             $stmt = $this->pdo->query("
                 SELECT p.*,
                     b.weight AS weight,
@@ -48,11 +49,8 @@ class ProductService
 
             $productsData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-            // Save data to cache
-            if (!is_dir($this->cacheDir)) {
-                mkdir($this->cacheDir, 0777, true);
-            }
-            file_put_contents($cacheFile, json_encode($productsData));
+            // Save data to the cache
+            $this->cache->set($cacheKey, $productsData);
         }
 
         return $productsData;
@@ -60,6 +58,15 @@ class ProductService
 
     public function create($productData): ?Product
     {
+        // Generate a cache key based on product sku
+        $cacheKey = "product_{$productData['sku']}";
+
+        // Check if the product is already in the cache
+        $cachedProduct = $this->cache->getProduct($cacheKey);
+        if ($cachedProduct) {
+            return $cachedProduct;
+        }
+
         $productType = null;
 
         // Define special attributes to class mapping
@@ -81,13 +88,11 @@ class ProductService
         if (!empty($productSpecialAttributes)) {
             $firstAttribute = array_key_first($productSpecialAttributes);
             $productType = $specialAttributesClassMapping[$firstAttribute];
+        } else {
+            return null; // No valid product type found
         }
 
-        if (!$productType) {
-            return null; 
-        }
-
-        // Instantiate appropriate product class object using the data from the database row
+        // Create the product using the factory
         $product = ProductFactory::createProduct(
             $productType,
             $productData['sku'],
@@ -95,6 +100,9 @@ class ProductService
             $productData['price'],
             $productSpecialAttributes,
         );
+
+        // Store the product object in the cache
+        $this->cache->setProduct($cacheKey, $product);
 
         return $product;
     }
@@ -136,7 +144,7 @@ class ProductService
             echo "Product saved successfully in the specific products table.";
 
             // Delete cache file after saving new product
-            $this->invalidateCache();
+            $this->cache->invalidateCache('products_cache');
 
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -155,7 +163,7 @@ class ProductService
             $stmt->execute($selectedProductSkus);
 
             // Delete cache file after deleting products
-            $this->invalidateCache();
+            $this->cache->invalidateCache('products_cache');
 
         } catch (PDOException $e) {
             throw new \Exception("Error deleting products: " . $e->getMessage());
@@ -172,14 +180,6 @@ class ProductService
             return 'exists ';
         } else {
             return 'unique ';
-        }
-    }
-
-    private function invalidateCache()
-    {
-        $cacheFile = $this->cacheDir . 'products_cache.json';
-        if (file_exists($cacheFile)) {
-            unlink($cacheFile);
         }
     }
 }
