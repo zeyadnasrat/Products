@@ -15,7 +15,7 @@ $(document).ready(function () {
             url: '/save-product', // URL of the PHP script handling the database insertion
             data: formData,
             success: function () {
-                window.location.href = '/routes/Router.php?action=/';
+                window.location.href = '/';
             },
             error: function () {
                 alert('Error saving product.');

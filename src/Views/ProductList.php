@@ -7,15 +7,9 @@
     <title>Product List</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <?php
-        $cssPath = $action != '' ? '/../public/css/styles.css' : 'public/css/styles.css';
-        $navScriptPath = $action != '' ? '/../public/js/add-button.js' : 'public/js/add-button.js';
-        $deleteScriptPath = $action != '' ? '/../public/js/delete-products.js' : 'public/js/delete-products.js';
-        
-        echo '<link rel="stylesheet" href="' . $cssPath . '" type="text/css">';
-        echo '<script src="' . $navScriptPath . '" type="text/javascript"></script>';
-        echo '<script src="' . $deleteScriptPath . '" type="text/javascript"></script>';
-    ?>
+    <link rel="stylesheet" href="/public/css/styles.css" type="text/css">
+    <script src="/public/js/add-button.js" type="text/javascript"></script>
+    <script src="/public/js/delete-products.js" type="text/javascript"></script>
     <link rel="icon" type="image/x-icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
