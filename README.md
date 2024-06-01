@@ -1,4 +1,4 @@
-Project Setup Locally 
+*** Project Setup Locally ***
 
 1- Clone the project
 
