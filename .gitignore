@@ -1,0 +1,5 @@
+# Ignore all .object files in the cache directory
+/cache/*.object
+
+# Ignore all .json files in the cache directory
+/cache/*.json
