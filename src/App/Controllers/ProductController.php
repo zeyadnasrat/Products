@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Services\ProductService;
+use App\Requests\ProductRequest;
 
 require_once __DIR__ . '/../Services/ProductService.php';
+require_once __DIR__ . '/../Requests/ProductRequest.php';
 
 class ProductController
 {
@@ -45,7 +47,16 @@ class ProductController
 
     public function saveProduct(array $postData)
     {
-        $this->productService->saveProduct($postData);
+        $request = new ProductRequest($postData);
+        $errors = $request->validate();
+
+        if (!empty($errors)) {
+            http_response_code(400);
+            echo json_encode($errors);
+            return;
+        }
+
+        $this->productService->saveProduct($request->getData());
     }
 
     public function delete()
