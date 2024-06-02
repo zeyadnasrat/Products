@@ -1,3 +1,7 @@
+*** Project URL ***
+- https://products.okyanos.co/
+
+
 *** Project Setup Locally ***
 
 1- Clone the project
