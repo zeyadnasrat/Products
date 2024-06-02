@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace Routes;
 
 use App\Controllers\ProductController;
 
-require_once __DIR__ . '/../src/App/Controllers/ProductController.php';
+require 'vendor/autoload.php';
 
 class Router
 {

@@ -6,12 +6,7 @@ use Database\Config;
 use Database\ProductFactory;
 use PDOException;
 use App\Models\Product;
-use App\Cache\Cache;
-
-require_once __DIR__ . '/../../../database/Config.php';
-require_once __DIR__ . '/../../../database/ProductFactory.php';
-require_once __DIR__ . '/../Models/Product.php';
-require_once __DIR__ . '/../../../cache/Cache.php';
+use Cache\Cache;
 
 class ProductService
 {

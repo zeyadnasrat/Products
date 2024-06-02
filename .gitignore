@@ -3,3 +3,7 @@
 
 # Ignore all .json files in the cache directory
 /cache/*.json
+
+/vendor/
+
+composer.lock

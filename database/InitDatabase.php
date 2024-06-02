@@ -4,8 +4,6 @@ namespace Database;
 
 use PDOException;
 
-require_once __DIR__ . '/Config.php';
-
 class InitDatabase
 {
     private $pdo;
