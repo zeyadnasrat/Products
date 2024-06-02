@@ -1,0 +1,27 @@
+{
+    "name": "zeyad/products",
+    "description": "This is a simple products web application",
+    "autoload": {
+        "psr-4": {
+            "App\\Controllers\\": "src/App/Controllers/",
+            "App\\Models\\": "src/App/Models/",
+            "App\\Requests\\": "src/App/Requests/",
+            "App\\Services\\": "src/App/Services/",
+            "Database\\": "database/",
+            "Routes\\": "routes/",
+            "Cache\\": "cache/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Zeyad Nasrat",
+            "email": "zeyad7nasrat@gmail.com"
+        }
+    ],
+    "require": {},
+    "config": {
+        "platform": {
+            "php": ">=8.2.18"
+        }
+    }
+}

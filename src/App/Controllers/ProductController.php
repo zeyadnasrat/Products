@@ -5,9 +5,6 @@ namespace App\Controllers;
 use App\Services\ProductService;
 use App\Requests\ProductRequest;
 
-require_once __DIR__ . '/../Services/ProductService.php';
-require_once __DIR__ . '/../Requests/ProductRequest.php';
-
 class ProductController
 {
     protected $productService;

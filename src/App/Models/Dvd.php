@@ -4,8 +4,6 @@ namespace App\Models;
 
 use App\Models\Product;
 
-require_once 'Product.php';
-
 class Dvd extends Product
 {
     protected float $size;

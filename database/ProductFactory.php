@@ -6,10 +6,6 @@ use App\Models\Dvd;
 use App\Models\Furniture;
 use App\Models\Book;
 
-require_once __DIR__ . '/../src/App/Models/Book.php';
-require_once __DIR__ . '/../src/App/Models/Dvd.php';
-require_once __DIR__ . '/../src/App/Models/Furniture.php';
-
 class ProductFactory
 {
     public static function createProduct($type, $sku, $name, $price, $attributes)
