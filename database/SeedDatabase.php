@@ -3,6 +3,9 @@
 namespace Database;
 
 use PDOException;
+use Database\Config;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 class SeedDatabase
 {

@@ -18,10 +18,7 @@
             "email": "zeyad7nasrat@gmail.com"
         }
     ],
-    "require": {},
-    "config": {
-        "platform": {
-            "php": ">=8.2.18"
-        }
+    "require": {
+        "php": ">=8.2.18"
     }
 }
