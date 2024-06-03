@@ -8,7 +8,7 @@
 
 ### 2- Create the database 
 
-### 3- Set database configuration inside Config.php file
+### 3- Open database directory then Config.php file to adjust database configuration
 
 ### 4- Run this command: composer install
 
